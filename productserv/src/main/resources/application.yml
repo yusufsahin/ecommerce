@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: productserv
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/product_db
+    cache:
+      type: redis
+    redis:
+      host: localhost
+      port: 6379
+server:
+  port: 9300

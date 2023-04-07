@@ -1,0 +1,65 @@
+version: '3.9'
+services:
+  categoryserv:
+    build:
+      context: ./categoryserv
+      dockerfile: Dockerfile
+    ports:
+      - "9200:9200"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/categorydb
+    restart: always
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=categorydb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=TestPassword1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  productserv:
+    build:
+      context: ./productserv
+      dockerfile: Dockerfile
+    ports:
+      - "9300:9300"
+    depends_on:
+      - mongodb
+      - redis
+    restart: always
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/product_db
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - "8001:8001"
+    restart: always
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URI=redis://redis:6379
+      - REDISINSIGHT_HOST=0.0.0.0
+      - REDISINSIGHT_PORT=8001
+      - REDISINSIGHT_SSL=false
+volumes:
+  postgres-data:
+  mongodb-data:
+  redis-data:
