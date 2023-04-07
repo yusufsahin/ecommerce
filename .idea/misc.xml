@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/cartserv" />
     <file type="web" url="file://$PROJECT_DIR$/categoryserv" />
+    <file type="web" url="file://$PROJECT_DIR$/orderserv" />
     <file type="web" url="file://$PROJECT_DIR$/productserv" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" project-jdk-name="17" project-jdk-type="JavaSDK" />

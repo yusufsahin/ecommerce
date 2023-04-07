@@ -28,6 +28,14 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/orderserv" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/orderserv" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/productserv" />
         <option name="modules">
           <set>
