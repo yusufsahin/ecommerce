@@ -24,10 +24,12 @@ services:
       - redis
     restart: always
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/product_db
       - SPRING_PROFILES_ACTIVE=redis
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_DATABASE=0
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/product_db
+
   cartserv:
     build:
       context: ./cartserv
@@ -38,6 +40,7 @@ services:
       - SPRING_PROFILES_ACTIVE=redis
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_DATABASE=0
     depends_on:
       - redis
 

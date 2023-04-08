@@ -1,90 +1,141 @@
 package net.provera.productserv.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import net.provera.productserv.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import net.provera.productserv.dao.ProductRepository;
 import net.provera.productserv.dao.model.Product;
 import net.provera.productserv.dto.ProductDTO;
-import net.provera.productserv.exception.ResourceNotFoundException;
 import net.provera.productserv.mapper.ProductMapper;
 import net.provera.productserv.service.ProductService;
 
 @Service
-@CacheConfig(cacheNames = "products")
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 	private final ProductRepository productRepository;
 	private final ProductMapper productMapper;
+	private final RedisTemplate<String, Object> redisTemplate;
 
-	@Autowired
-	public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
-		this.productRepository = productRepository;
-		this.productMapper = productMapper;
+	private ValueOperations<String, Object> getRedisValueOperations() {
+		return redisTemplate.opsForValue();
+	}
+	private <T> T getFromCache(String key, TypeReference<T> valueType) {
+		Object value = getRedisValueOperations().get(key);
+		if (value != null) {
+			ObjectMapper mapper = new ObjectMapper();
+			if (value instanceof String) {
+				try {
+					return mapper.readValue((String) value, valueType);
+				} catch (JsonProcessingException e) {
+					throw new RuntimeException("Failed to parse cached value for key " + key, e);
+				}
+			} else if (value instanceof ArrayList) {
+				try {
+					String valueAsString = mapper.writeValueAsString(value);
+					return mapper.readValue(valueAsString, valueType);
+				} catch (JsonProcessingException e) {
+					throw new RuntimeException("Failed to parse cached value for key " + key, e);
+				}
+			}
+		}
+		return null;
+	}
+
+	private <T> void setCache(String key, T value) {
+		getRedisValueOperations().set(key, value);
+	}
+
+	private void invalidateCache(String... keys) {
+		redisTemplate.delete(Arrays.asList(keys));
 	}
 
 	@Override
 	public ProductDTO createProduct(ProductDTO productDTO) {
 		Product product = productMapper.toProduct(productDTO);
-		Product savedProduct = productRepository.save(product);
-		return productMapper.toProductDTO(savedProduct);
-	}
+		product = productRepository.save(product);
 
-	@Override
-	@Cacheable(value = "products", key = "'all'")
-	public List<ProductDTO> getAllProducts() {
-		return productRepository.findAll().stream()
-				.map(productMapper::toProductDTO)
-				.collect(Collectors.toList());
-	}
+		// Invalidate the "all_products" cache
+		invalidateCache("all_products");
 
-	@Override
-	@Cacheable(value = "products", key = "#categoryId")
-	public List<ProductDTO> getProductsByCategoryId(String categoryId) {
-		return productRepository.findByCategoryId(categoryId).stream()
-				.map(productMapper::toProductDTO)
-				.collect(Collectors.toList());
+		return productMapper.toProductDTO(product);
 	}
-
 	@Override
-	@Cacheable(value = "products", key = "#id")
 	public ProductDTO getProductById(String id) {
-		Optional<Product> productOptional = productRepository.findById(id);
-		return productOptional.map(productMapper::toProductDTO)
-				.orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+		ProductDTO productDTO = getFromCache(id, new TypeReference<ProductDTO>() {});
+
+		if (productDTO != null) {
+			return productDTO;
+		}
+
+		Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+		productDTO = productMapper.toProductDTO(product);
+
+		setCache(id, productDTO);
+
+		return productDTO;
 	}
 
 	@Override
-	@CachePut(key = "#id")
+	public List<ProductDTO> getAllProducts() {
+		List<ProductDTO> productDTOs = getFromCache("all_products", new TypeReference<List<ProductDTO>>() {});
+
+		if (productDTOs != null) {
+			return productDTOs;
+		}
+
+		List<Product> products = productRepository.findAll();
+		productDTOs = productMapper.toProductDTOs(products);
+
+		setCache("all_products", productDTOs);
+
+		return productDTOs;
+	}
+
+	@Override
+	public List<ProductDTO> getProductsByCategoryId(String categoryId) {
+		List<ProductDTO> productDTOs = getFromCache("products_by_category_id_" + categoryId, new TypeReference<List<ProductDTO>>() {});
+
+		if (productDTOs != null) {
+			return productDTOs;
+		}
+
+		List<Product> products = productRepository.findByCategoryId(categoryId);
+		productDTOs = productMapper.toProductDTOs(products);
+
+		setCache("products_by_category_id_" + categoryId, productDTOs);
+
+		return productDTOs;
+	}
+
+	@Override
 	public ProductDTO updateProduct(String id, ProductDTO productDTO) {
-		Product product = getProductByIdIfExists(id);
+		Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 		product.setName(productDTO.getName());
 		product.setDescription(productDTO.getDescription());
 		product.setPrice(productDTO.getPrice());
-		product.setCategoryId(productDTO.getCategoryId());
-		Product updatedProduct = productRepository.save(product);
-		return productMapper.toProductDTO(updatedProduct);
-	}
+		product = productRepository.save(product);
 
+		// Invalidate the caches for this product and "all_products"
+		invalidateCache(id, "all_products");
+
+		return productMapper.toProductDTO(product);
+	}
 	@Override
 	public void deleteProduct(String id) {
-		Product product = getProductByIdIfExists(id);
+		Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 		productRepository.delete(product);
-	}
 
-	private Product getProductByIdIfExists(String id) {
-		return productRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+		// Invalidate the caches for this product and "all_products"
+		invalidateCache(id, "all_products");
 	}
 
 }
