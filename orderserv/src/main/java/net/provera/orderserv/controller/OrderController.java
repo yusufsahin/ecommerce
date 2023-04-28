@@ -20,9 +20,9 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> getAllOrdersByUserId(@RequestParam Optional<String> userId){
-        if(userId.isPresent()){
-            return ResponseEntity.ok(orderService.getAllOrdersByUserId(userId.get()));
+    public ResponseEntity<List<Order>> getAllOrdersByCustomerId(@RequestParam Optional<String> customerId){
+        if(customerId.isPresent()){
+            return ResponseEntity.ok(orderService.getAllOrdersByUserId(customerId.get()));
         }
         else
             return ResponseEntity.ok(orderService.getAllOrders());

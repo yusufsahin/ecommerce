@@ -10,13 +10,11 @@ import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
+@Builder
 public class OrderItem {
+    private String productId;
 
-    @Id
-    @GeneratedValue(strategy = GenerationStrategy.UNIQUE)
-    private String id;
-    private String name;
+    private String productName;
     private int quantity;
     private double price;
 }

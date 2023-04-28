@@ -32,7 +32,6 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> orderdb = orderRepository.findById(orderId);
         if(orderdb.isPresent()){
             // güncellenecek
-            orderdb.get().setUserId(order.getUserId());
             return orderRepository.save(orderdb.get());
         }
         return null;
@@ -44,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrdersByUserId(String userId) {
-        return orderRepository.findByUserId(userId);
+    public List<Order> getAllOrdersByUserId(String customerId) {
+        return orderRepository.findByCustomerId(customerId);
     }
 }
