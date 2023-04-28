@@ -6,6 +6,7 @@ import net.provera.orderserv.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -27,7 +28,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrdersByUserId(String userId) {
-        return orderRepository.findByUserId(userId);
+    public Order updateOrder(String orderId, Order order) {
+        Optional<Order> orderdb = orderRepository.findById(orderId);
+        if(orderdb.isPresent()){
+            // güncellenecek
+            return orderRepository.save(orderdb.get());
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteOrder(String id) {
+        orderRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Order> getAllOrdersByUserId(String customerId) {
+        return orderRepository.findByCustomerId(customerId);
     }
 }

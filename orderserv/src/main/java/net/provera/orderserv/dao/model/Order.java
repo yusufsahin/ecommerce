@@ -1,9 +1,6 @@
 package net.provera.orderserv.dao.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.couchbase.core.mapping.Document;
 import org.springframework.data.couchbase.core.mapping.Field;
@@ -12,12 +9,14 @@ import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
 import org.springframework.data.couchbase.core.mapping.id.IdAttribute;
 import org.springframework.data.couchbase.core.query.N1qlPrimaryIndexed;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-@N1qlPrimaryIndexed
+@Builder
 public class Order {
 
     @Id
@@ -25,8 +24,14 @@ public class Order {
     private String id;
 
     @Field
-    private String productId;
+    private String customerId;
 
     @Field
-    private String userId;
+    private List<OrderItem> orderItems;
+
+    @Field
+    private double totalAmount;
+
+    @Field
+    private String status;
 }

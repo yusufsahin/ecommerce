@@ -10,4 +10,8 @@ public interface OrderService {
     public List<Order> getAllOrdersByUserId(String userId);
 
     List<Order> getAllOrders();
+
+    Order updateOrder(String orderId, Order order);
+
+    void deleteOrder(String id);
 }
