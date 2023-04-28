@@ -12,6 +12,8 @@ import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
 import org.springframework.data.couchbase.core.mapping.id.IdAttribute;
 import org.springframework.data.couchbase.core.query.N1qlPrimaryIndexed;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,8 +27,8 @@ public class Order {
     private String id;
 
     @Field
-    private String productId;
+    private String userId;
 
     @Field
-    private String userId;
+    private List<OrderItem> orderItems;
 }
