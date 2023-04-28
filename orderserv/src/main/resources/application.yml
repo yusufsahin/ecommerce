@@ -1,4 +1,9 @@
+server:
+  port: 9500
+
 spring:
+  application:
+    name: orderserv
   data:
     couchbase:
       auto-index: true

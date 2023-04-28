@@ -7,7 +7,7 @@ import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 @Configuration
 public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 
-    static String connectionString = "couchbase://127.0.0.1";
+    static String connectionString = "couchbase://localhost";
     static String username = "Administrator";
     static String password = "123456";
     static String bucketName = "order-bucket";

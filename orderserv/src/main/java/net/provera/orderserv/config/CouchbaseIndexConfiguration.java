@@ -1,5 +1,5 @@
 package net.provera.orderserv.config;
-
+import com.couchbase.client.core.error.IndexExistsException;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.query.QueryOptions;
 import com.couchbase.client.java.query.QueryResult;
@@ -20,11 +20,15 @@ public class CouchbaseIndexConfiguration {
 
             if (indexCount == 0) {
                 String createPrimaryIndexQuery = "CREATE PRIMARY INDEX ON `order-bucket`;";
-                couchbaseCluster.query(createPrimaryIndexQuery, QueryOptions.queryOptions());
-                System.out.println("Primary index created on 'order-bucket'");
+                try {
+                    couchbaseCluster.query(createPrimaryIndexQuery, QueryOptions.queryOptions());
+                    System.out.println("Primary index created on 'order-bucket'");
+                } catch (IndexExistsException e) {
+                    System.out.println("Primary index already exists on 'order-bucket'");
+                }
             } else {
                 System.out.println("Primary index already exists on 'order-bucket'");
             }
         };
-}
+    }
 }
