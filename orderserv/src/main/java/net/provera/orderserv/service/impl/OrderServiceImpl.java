@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> orderdb = orderRepository.findById(orderId);
         if(orderdb.isPresent()){
             // güncellenecek
-            orderdb.get().setProductId(order.getProductId());
+            orderdb.get().setUserId(order.getUserId());
             return orderRepository.save(orderdb.get());
         }
         return null;
