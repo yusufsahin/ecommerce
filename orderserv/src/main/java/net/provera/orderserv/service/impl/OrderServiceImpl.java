@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrder(String orderId, Order order) {
         Optional<Order> orderdb = orderRepository.findById(orderId);
         if(orderdb.isPresent()){
-            // güncellenecek
+            orderdb.get().setStatus(order.getStatus());
             return orderRepository.save(orderdb.get());
         }
         return null;
