@@ -17,4 +17,9 @@ public class OrderItem {
     private String productName;
     private int quantity;
     private double price;
+
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
+        this.price = quantity * this.price;
+    }
 }

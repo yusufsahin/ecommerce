@@ -34,4 +34,30 @@ public class Order {
 
     @Field
     private String status;
+    public void addOrderItem(OrderItem item) {
+        orderItems.add(item);
+    }
+
+    public void removeOrderItem(OrderItem item) {
+        orderItems.remove(item);
+    }
+
+    public void updateOrderItem(OrderItem item, int quantity) {
+        OrderItem currentItem = orderItems.stream()
+                .filter(i -> i.getProductId().equals(item.getProductId()))
+                .findFirst()
+                .orElse(null);
+
+        if (currentItem != null) {
+            currentItem.setQuantity(quantity);
+            currentItem.setPrice(quantity * currentItem.getPrice());
+            updateTotalAmount();
+        }
+    }
+
+    public void updateTotalAmount() {
+        this.totalAmount = orderItems.stream()
+                .mapToDouble(OrderItem::getPrice)
+                .sum();
+    }
 }
