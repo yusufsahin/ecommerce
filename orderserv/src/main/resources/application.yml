@@ -7,3 +7,17 @@ spring:
   data:
     couchbase:
       auto-index: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    queue: order-queue
+    exchange: orders
+    routing-key: orders.key
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
