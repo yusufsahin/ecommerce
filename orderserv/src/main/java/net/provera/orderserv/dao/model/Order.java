@@ -6,10 +6,9 @@ import org.springframework.data.couchbase.core.mapping.Document;
 import org.springframework.data.couchbase.core.mapping.Field;
 import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
 import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
-import org.springframework.data.couchbase.core.mapping.id.IdAttribute;
-import org.springframework.data.couchbase.core.query.N1qlPrimaryIndexed;
 
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -41,18 +40,16 @@ public class Order {
     public void removeOrderItem(OrderItem item) {
         orderItems.remove(item);
     }
-
     public void updateOrderItem(OrderItem item, int quantity) {
-        OrderItem currentItem = orderItems.stream()
+        Optional<OrderItem> currentItem = orderItems.stream()
                 .filter(i -> i.getProductId().equals(item.getProductId()))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
 
-        if (currentItem != null) {
-            currentItem.setQuantity(quantity);
-            currentItem.setPrice(quantity * currentItem.getPrice());
+        currentItem.ifPresent(orderItem -> {
+            orderItem.setQuantity(quantity);
+            orderItem.setPrice(quantity * orderItem.getPrice());
             updateTotalAmount();
-        }
+        });
     }
 
     public void updateTotalAmount() {
