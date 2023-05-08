@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/cartserv" />
     <file type="web" url="file://$PROJECT_DIR$/categoryserv" />
+    <file type="web" url="file://$PROJECT_DIR$/inventoryserv" />
     <file type="web" url="file://$PROJECT_DIR$/orderserv" />
     <file type="web" url="file://$PROJECT_DIR$/productserv" />
   </component>
