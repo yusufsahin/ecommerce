@@ -14,7 +14,7 @@ spring:
     password: guest
     queue: order-queue
     exchange: orders
-    routing-key: orders.key
+    routing-key: order.*
 
 management:
   endpoints:

@@ -24,6 +24,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.couchbase.client:java-client'
     implementation 'org.springframework.boot:spring-boot-starter-data-couchbase'
+    implementation 'com.rabbitmq:amqp-client:5.17.0'
+    implementation 'org.springframework.amqp:spring-rabbit:3.0.4'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
