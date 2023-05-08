@@ -94,14 +94,14 @@ private final ObjectMapper objectMapper;
     @Override
     public void order(String userId) {
         List<CartItem> cartItems = getCartItems(userId);
-        publishOrderEvent(cartItems,"orders.created",userId);
+        publishOrderEvent(cartItems,"order.created",userId);
     }
     public void publishCartEvent(List<CartItem> cartItems, String routingKey, String userId) {
         try {
             CartEvent cartEvent = new CartEvent(userId, cartItems,
-                    routingKey.equals("cart.itemAdded") ? CartEventType.ITEMADDED :
-                            routingKey.equals("cart.itemUpdated") ? CartEventType.ITEMUPDATED :
-                                    routingKey.equals("cart.itemRemoved") ? CartEventType.ITEMREMOVED : CartEventType.CLEARED);
+            routingKey.equals("cart.itemAdded") ? CartEventType.ITEMADDED :
+            routingKey.equals("cart.itemUpdated") ? CartEventType.ITEMUPDATED :
+            routingKey.equals("cart.itemRemoved") ? CartEventType.ITEMREMOVED : CartEventType.CLEARED);
             String orderEventJson = objectMapper.writeValueAsString(cartEvent);
             rabbitTemplate.convertAndSend("cart", routingKey, orderEventJson);
         } catch (JsonProcessingException e) {

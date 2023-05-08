@@ -13,7 +13,6 @@ import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
 @Builder
 public class OrderItem {
     private String productId;
-
     private String productName;
     private int quantity;
     private double price;

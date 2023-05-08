@@ -33,19 +33,17 @@ public class OrderEventListener {
     }
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
-    public void onOrderEvent(@Payload String orderEventJson) throws JsonProcessingException {
-        OrderEventDto orderEventDto = objectMapper.readValue(orderEventJson,OrderEventDto.class);
-        OrderEvent orderEvent = new OrderEvent();
-        orderEvent.setOrder(orderEventDto.getOrder());
-        orderEvent.setEventType(orderEventDto.getEventType().equals("CREATED")?OrderEventType.CREATED:
-                orderEventDto.getEventType().equals("UPDATED")?OrderEventType.UPDATED:OrderEventType.DELETED);;
-        orderEventHandler.handleEvent(orderEvent);
+    public void onOrderEvent(@Payload String orderEventJson) {
+        System.out.println("Order Event came");
+        processOrder(orderEventJson);
     }
-    @RabbitListener(queues = "cart-queue")
-    public void onCartEvent(String cartEventJson){
-        System.out.println("Cart order came");
+    private void processOrder(String orderEventJson){
         try{
-            OrderEvent orderEvent = objectMapper.readValue(cartEventJson, OrderEvent.class);
+            OrderEventDto cartEventDto = objectMapper.readValue(orderEventJson,OrderEventDto.class);
+            OrderEvent orderEvent = new OrderEvent();
+            orderEvent.setOrder(cartEventDto.getOrder());
+            orderEvent.setEventType(cartEventDto.getEventType().equals("CREATED")?OrderEventType.CREATED:
+                    cartEventDto.getEventType().equals("UPDATED")?OrderEventType.UPDATED:OrderEventType.DELETED);;
             orderEventHandler.handleEvent(orderEvent);
         }catch (JsonProcessingException e){
             throw new RuntimeException("Failed to process cart event", e);
