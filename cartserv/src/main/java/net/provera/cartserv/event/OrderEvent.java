@@ -1,19 +1,11 @@
-package net.provera.orderserv.event;
+package net.provera.cartserv.event;
 
+import net.provera.cartserv.dao.model.Order;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import net.provera.orderserv.dao.model.Order;
-
-import java.io.Serial;
 import java.io.Serializable;
-@Data
-@NoArgsConstructor
+
 public class OrderEvent implements Serializable {
 
-    @Serial
     private static final long serialVersionUID = 1L;
 
     private Order order;
@@ -22,6 +14,10 @@ public class OrderEvent implements Serializable {
     public OrderEvent(Order order, OrderEventType eventType) {
         this.order = order;
         this.eventType = eventType;
+    }
+    public OrderEvent(Order order){
+        this.order=order;
+        this.eventType=OrderEventType.CREATED;
     }
 
     public Order getOrder() {

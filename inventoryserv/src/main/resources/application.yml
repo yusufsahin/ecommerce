@@ -1,0 +1,25 @@
+server:
+  port: 9600
+
+spring:
+  application:
+    name: inventoryserv
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inventorydb
+    username: postgres
+    password: tiydem05
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    queue: inventory-queue
+    exchange: inventory
+    routing-key: inventory.*
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+

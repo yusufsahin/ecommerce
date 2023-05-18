@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cartserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/cartserv.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/categoryserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/categoryserv.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/inventoryserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/inventoryserv.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.provera.orderserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.provera.orderserv.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/orderserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/orderserv.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/productserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/productserv.main.iml" />
     </modules>

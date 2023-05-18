@@ -23,8 +23,8 @@ public class CartController {
     @PostMapping("/{userId}/items")
     public ResponseEntity<Void> addItem(
             @PathVariable String userId,
-            @RequestBody CartItem item) {
-        cartService.addItem(userId, item);
+            @RequestBody List<CartItem> items) {
+        cartService.addItem(userId, items);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -56,5 +56,10 @@ public class CartController {
             @PathVariable String userId) {
         cartService.clearCart(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/{userId}/order")
+    public ResponseEntity<Void> orderCart(@PathVariable String userId){
+        cartService.order(userId);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

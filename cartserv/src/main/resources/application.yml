@@ -1,6 +1,14 @@
 spring:
   application:
     name: cartserv
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    queue: cart-queue
+    exchange: cart
+    routing-key: cart.*
   data:
     cache:
       type: redis
