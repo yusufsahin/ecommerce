@@ -36,6 +36,15 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/notificationserv" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/notificationserv" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/orderserv" />
         <option name="modules">
           <set>
