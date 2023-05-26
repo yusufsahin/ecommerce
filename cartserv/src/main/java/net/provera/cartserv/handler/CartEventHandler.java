@@ -36,8 +36,6 @@ public class CartEventHandler {
                         cartItems) {
                     cartService.updateItem(userId, item);
                 }
-            case ORDERED:
-                cartService.order(userId);
             default:
                 throw new IllegalArgumentException("Invalid event type");
         }
