@@ -22,7 +22,6 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification saveNotification(Notification notification) {
-        notification.setId(UUID.randomUUID());
         notification.setDate(new Date());
         notification.setRead(false);
         return notificationRepository.save(notification);
