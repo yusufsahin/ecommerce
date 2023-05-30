@@ -26,8 +26,7 @@ public class CartEventListener {
             CartEvent cartEvent = new CartEvent(cartEventDto.getUserId(),cartEventDto.getCartItems(),
             cartEventDto.getEventType().equals("ITEMADDED") ? CartEventType.ITEMADDED :
             cartEventDto.getEventType().equals("ITEMREMOVED")? CartEventType.ITEMREMOVED:
-            cartEventDto.getEventType().equals("ITEMUPDATED")?CartEventType.ITEMUPDATED:
-            cartEventDto.getEventType().equals("CLEARED")?CartEventType.CLEARED: CartEventType.ORDERED);
+            cartEventDto.getEventType().equals("ITEMUPDATED")?CartEventType.ITEMUPDATED: CartEventType.CLEARED);
             System.out.println(cartEvent.getEventType().toString());
             cartEventHandler.handleEvent(cartEvent);
         } catch (JsonProcessingException e) {
