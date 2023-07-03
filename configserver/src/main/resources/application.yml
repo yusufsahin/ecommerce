@@ -5,5 +5,5 @@ spring:
    config:
      server:
       git:
-       uri: https://github.com/T1murY/e-commerce-config.git
+       uri: https://github.com/develoberke/e-commerce-config.git
 
