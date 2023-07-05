@@ -49,7 +49,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
         User dbAdminUser = userRepository.findByUsername("admin");
         User dbMemberUser = userRepository.findByUsername("member");
         User dbBothUser = userRepository.findByUsername("both");
-        User dbNoneUser = userRepository.findByUsername("noneRole");
+        User dbNoneUser = userRepository.findByUsername("none");
 
         if (dbAdminUser==null) {
             Collection<Role> myroles = new ArrayList<Role>();

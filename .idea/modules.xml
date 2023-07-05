@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cartserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/cartserv.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/categoryserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/categoryserv.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/configserver.main.iml" filepath="$PROJECT_DIR$/.idea/modules/configserver.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ecommerce.categoryserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ecommerce.categoryserv.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/inventoryserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/inventoryserv.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.provera.categoryserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.provera.categoryserv.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.provera.inventoryserv.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.provera.inventoryserv.main.iml" />
