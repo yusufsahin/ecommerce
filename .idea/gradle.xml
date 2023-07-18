@@ -67,6 +67,14 @@
           </set>
         </option>
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/securityserv" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/securityserv" />
+          </set>
+        </option>
+      </GradleProjectSettings>
     </option>
   </component>
 </project>
